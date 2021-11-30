@@ -1,6 +1,6 @@
 # netANOVA
 Unsupervised statistical procedure to identify groups of networks.
-
+    h<sub>&theta;</sub>(x) = &theta;<sub>o</sub> x + &theta;<sub>1</sub>x
 ## networkData.RData
 **Description**
 
@@ -56,7 +56,7 @@ initialization(G, meth)
 
 **Details**
 
-The function initialization computes the similarity and distance matrix from a set of networks. For kernel measures, the distance is obtained via the following formula $$d=\sqrt{(s_ii-2s_ij+s_jj)}$$  with $s_ij$ the similarity measure between network i and network j obtained from a kernel. Otherwise, s=1/(1+d).
+The function initialization computes the similarity and distance matrix from a set of networks. For kernel measures, the distance is obtained via the following formula $d=\sqrt{(s_ii-2s_ij+s_jj)}$  with $s_ij$ the similarity measure between network i and network j obtained from a kernel. Otherwise, s=1/(1+d).
 
 **Value**
 
