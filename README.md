@@ -54,7 +54,7 @@ initialization(G, meth)
 
 **Details**
 
-The function initialization computes the similarity and distance matrix from a set of networks. For kernel measures, the distance is obtained via the following formula d=\sqrt{((s_ii-2s_ij+s_jj))}  with s_ijthe similarity measure between network I and network j obtained from a kernel. Otherwise, s=1/(1+d).
+The function initialization computes the similarity and distance matrix from a set of networks. For kernel measures, the distance is obtained via the following formula d=$\sqrt{((s_ii-2s_ij+s_jj))}$  with s_ijthe similarity measure between network I and network j obtained from a kernel. Otherwise, s=1/(1+d).
 
 **Value**
 
