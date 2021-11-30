@@ -62,6 +62,7 @@ A list containing a matrix of the vectorized networks if all graphs have the sam
 
 **References**
 > Sugiyama, M., Ghisu, M. E., Llinares-López, F., & Borgwardt, K. (2018). graphkernels: R and Python packages for graph comparison. Bioinformatics, 34(3), 530-532.
+
 > Kisung You (2020). NetworkDistance: Distance Measures for Networks. R package version 0.3.3. https://CRAN.R-project.org/package=NetworkDistance.
 
 **Example**
