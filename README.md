@@ -89,7 +89,7 @@ netANOVA(Dist, t=NULL, method_clust=”complete”, MT=”tree”, p_threshold=0
 - `Dist`:		A distance matrix, for example derived from the function initialization.
 - `t`:		the threshold indicating the minimum size of a group of network to be statistically tested for difference with another group.
 - `method_clust`:	method to compute the distance between each cluster in the hierarchical clustering: “complete” (default) or average.
-- `MT`:		method to correct for multiple testing (explain in details), default “tree”.
+- `MT`:		method to correct for multiple testing. Default “tree”, i.e. $p_adjusted=p\times\frac{N_j-1}{N-1}$, where N_j is the number of networks clustered at node j of the dendrogram.
 - `p_threshold`:	maximum p-value for 2 groups of networks to be considered as significantly h different, default 0.05.
 - `permutation`:	number of permutations to derive the p-value, default 99.
 - `perturbation`:	percentage of values permuted in the distance matrix, default 20%.
@@ -106,6 +106,8 @@ To determine the optimal number of clusters, we recursively test for distances b
 
 ### References
 > Anderson, M. J. (2001). A new method for non‐parametric multivariate analysis of variance. Austral ecology, 26(1), 32-46.
+
+> Kimes, P. K., Liu, Y., Neil Hayes, D., & Marron, J. S. (2017). Statistical significance for hierarchical clustering. Biometrics, 73(3), 811-821.
 
 ### Example
 ```
