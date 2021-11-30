@@ -39,7 +39,7 @@ head(membership)
 ## Initialization
 **Description**
 
-Initialization computes pairwise similarities and distances to a set of networks, and return the distance and similarity matrices.
+Initialization computes pairwise similarities and distances to a set of networks, and returns the distance and similarity matrices.
 
 **Usage**
 
