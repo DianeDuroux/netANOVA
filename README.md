@@ -58,7 +58,7 @@ The function initialization computes the similarity and distance matrix from a s
 
 **Value**
 
-A list containing a matrix containing the verctorizes networks if all graphs have the same size, the similarity matrix and the distance matrix.
+A list containing a matrix of the vectorized networks if all graphs have the same size, the similarity matrix and the distance matrix.
 
 **References**
 > Sugiyama, M., Ghisu, M. E., Llinares-López, F., & Borgwardt, K. (2018). graphkernels: R and Python packages for graph comparison. Bioinformatics, 34(3), 530-532.
