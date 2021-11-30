@@ -101,8 +101,7 @@ To determine the optimal number of clusters, we recursively test for distances b
 
 ### Value
 
-- `Membership`: 	table indicating the membership of each network.
-- `Output`:		Details on the differences between pairs of groups along the hierarchical clustering, i.e statistics, ids of networks in group 1, id of networks in group 2, associated p-value.
+A list of two elements: table indicating the membership of each network, and details on the differences between pairs of groups along the hierarchical clustering, i.e statistics, ids of networks in group 1, id of networks in group 2, associated p-value.
 
 ### References
 > Anderson, M. J. (2001). A new method for non‐parametric multivariate analysis of variance. Austral ecology, 26(1), 32-46.
