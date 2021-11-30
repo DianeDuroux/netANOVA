@@ -88,7 +88,7 @@ netANOVA(Dist, t=NULL, method_clust=”complete”, MT=”tree”, p_threshold=0
 
 - `Dist`:		A distance matrix, for example derived from the function initialization.
 - `t`:		the threshold indicating the minimum size of a group of network to be statistically tested for difference with another group.
-- `method_clust`:	method to compute the distance between each cluster is measured in the hierarchical clustering: “complete” (default) or average.
+- `method_clust`:	method to compute the distance between each cluster in the hierarchical clustering: “complete” (default) or average.
 - `MT`:		method to correct for multiple testing (explain in details), default “tree”.
 - `p_threshold`:	maximum p-value for 2 groups of networks to be considered as significantly h different, default 0.05.
 - `permutation`:	number of permutations to derive the p-value, default 99.
