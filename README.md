@@ -20,12 +20,19 @@ List of 30 adjacency matrices and their group membership (random, scale-free, hu
 
 **Example**
 ```
+#Upload the simulated networks
 load("networkData.RData")
+#Select the 30 adjacency matrices
 input_baseline_list=data[[1]]
+
+#Plot a random network, a scale-free network and a hub network
 plot(graph_from_adjacency_matrix(input_baseline_list[[1]]), vertex.label= NA, edge.arrow.size=0.02,vertex.size = 3, xlab = "Random network")
 plot(graph_from_adjacency_matrix(input_baseline_list[[11]]), vertex.label= NA, edge.arrow.size=0.02,vertex.size = 3, xlab = "Scale free network")
 plot(graph_from_adjacency_matrix(input_baseline_list[[21]]), vertex.label= NA, edge.arrow.size=0.02,vertex.size = 3, xlab = "Hub network")
+
+#Select the group memberships
 membership=data[[2]]
+#Print an extract of the group memberships
 head(membership)
 ```
 
