@@ -1,6 +1,6 @@
 # netANOVA
 Unsupervised statistical procedure to identify groups of networks.
-    h<sub>&theta;</sub>(x) = &theta;<sub>o</sub> x + &theta;<sub>1</sub>x
+
 ## networkData.RData
 **Description**
 
