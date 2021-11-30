@@ -7,8 +7,9 @@ Unsupervised statistical procedure to identify groups of networks.
 30 simulated networks: 10 networks with random structure, 10 scale-free networks, 10 hub networks.
 
 **Usage**
-
+```
 load(networkData.RData)
+```
 
 **Format**
 
@@ -44,8 +45,9 @@ head(membership)
 Initialization computes pairwise similarities and distances to a set of networks, and returns the distance and similarity matrices.
 
 **Usage**
-
+```
 initialization(G, meth)
+```
 
 **Arguments**
 
@@ -81,8 +83,9 @@ init=initialization(G, meth=”edd”)
 Applies an unsupervised hierarchical algorithm to identify latent classes of similar networks.
 
 ### Usage
-
+```
 netANOVA(Dist, t=NULL, method_clust=”complete”, MT=”tree”, p_threshold=0.05, permutations=99, perturbation=0.2, seed=2021)
+```
 
 ### Arguments
 
