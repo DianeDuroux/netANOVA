@@ -22,6 +22,7 @@ List of 30 adjacency matrices and their group membership (random, scale-free, hu
 ```
 #Upload the simulated networks
 load("networkData.RData")
+
 #Select the 30 adjacency matrices
 input_baseline_list=data[[1]]
 
@@ -32,6 +33,7 @@ plot(graph_from_adjacency_matrix(input_baseline_list[[21]]), vertex.label= NA, e
 
 #Select the group memberships
 membership=data[[2]]
+
 #Print an extract of the group memberships
 head(membership)
 ```
@@ -47,8 +49,8 @@ initialization(G, meth)
 
 **Arguments**
 
-- 'G':		A list of adjacency matrices.
-- 'Meth': 		Type of distance method from “edd”, “gdd”, “wsd”, “hamming”, “rbf”,“shortestPathKernel”, "randomWalkKernel", "WLkernel", "graphletKernel", “Gaussian”.
+- `G`:		A list of adjacency matrices.
+- `Meth`: 		Type of distance method from “edd”, “gdd”, “wsd”, “hamming”, “rbf”,“shortestPathKernel”, "randomWalkKernel", "WLkernel", "graphletKernel", “Gaussian”.
 
 **Details**
 
@@ -64,8 +66,10 @@ Kisung You (2020). NetworkDistance: Distance Measures for Networks. R package ve
 
 **Example**
 ```
+#Upload the simulated networks
 load("networkData.RData")
 input_baseline_list=data[[1]]
+
 #Compute the matrix distance
 init=initialization(G, meth=”edd”)
 ```
@@ -81,14 +85,14 @@ netANOVA(Dist, t=NULL, method_clust=”complete”, MT=”tree”, p_threshold=0
 
 ### Arguments
 
-- 'Dist':		A distance matrix, for example derived from the function initialization.
-- 't':		the threshold indicating the minimum size of a group of network to be statistically tested for difference with another group.
-- 'Method': clust	method to compute the distance between each cluster is measured in the hierarchical clustering: “complete” (default) or average.
-- 'MT':		method to correct for multiple testing (explain in details), default “tree”.
-- 'p_threshold':	maximum p-value for 2 groups of networks to be considered as significantly h different, default 0.05.
-- 'permutation':	number of permutations to derive the p-value, default 99.
-- 'perturbation':	percentage of values permuted in the distance matrix, default 20%.
-- 'Seed':		seed for replicability.
+- `Dist`:		A distance matrix, for example derived from the function initialization.
+- `t`:		the threshold indicating the minimum size of a group of network to be statistically tested for difference with another group.
+- `Method`: clust	method to compute the distance between each cluster is measured in the hierarchical clustering: “complete” (default) or average.
+- `MT`:		method to correct for multiple testing (explain in details), default “tree”.
+- `p_threshold`:	maximum p-value for 2 groups of networks to be considered as significantly h different, default 0.05.
+- `permutation`:	number of permutations to derive the p-value, default 99.
+- `perturbation`:	percentage of values permuted in the distance matrix, default 20%.
+- `Seed`:		seed for replicability.
 
 ### Details
 
@@ -96,18 +100,21 @@ To determine the optimal number of clusters, we recursively test for distances b
 
 ### Value
 
-- 'Membership': 	table indicating the membership of each network.
-- 'Output':		Details on the differences between pairs of groups along the hierarchical clustering, i.e statistics, ids of networks in group 1, id of networks in group 2, associated p-value.
+- `Membership`: 	table indicating the membership of each network.
+- `Output`:		Details on the differences between pairs of groups along the hierarchical clustering, i.e statistics, ids of networks in group 1, id of networks in group 2, associated p-value.
 
 ### References
 > Anderson, M. J. (2001). A new method for non‐parametric multivariate analysis of variance. Austral ecology, 26(1), 32-46.
 
 ### Example
 ```
+#Upload the simulated networks
 load("networkData.RData")
 input_baseline_list=data[[1]]
+
 #Compute the matrix distance
 init=initialization(G, meth=”edd”)
+
 #netANOVA clustering algorithm to create group of networks that are statistically different
 output=netANOVA(Dist=init[[3]],  t=5)
 ```
