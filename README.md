@@ -71,7 +71,7 @@ A list containing a matrix of the vectorized networks if all graphs have the sam
 load("networkData.RData")
 input_baseline_list=data[[1]]
 
-#Compute the matrix distance
+#Compute the distance matrix
 init=initialization(G, meth=”edd”)
 ```
 
