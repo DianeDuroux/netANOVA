@@ -52,7 +52,7 @@ initialization(G, meth)
 **Arguments**
 
 - `G`:		A list of adjacency matrices.
-- `Meth`: 		Type of distance method from “edd”, “gdd”, “wsd”, “hamming”, “rbf”,“shortestPathKernel”, "randomWalkKernel", "WLkernel", "graphletKernel", “Gaussian”.
+- `meth`: 		Type of distance method from “edd”, “gdd”, “wsd”, “hamming”, “rbf”,“shortestPathKernel”, "randomWalkKernel", "WLkernel", "graphletKernel", “Gaussian”.
 
 **Details**
 
@@ -92,11 +92,11 @@ netANOVA(Dist, t=NULL, method_clust=”complete”, MT=”tree”, p_threshold=0
 - `Dist`:		A distance matrix, for example derived from the function initialization.
 - `t`:		the threshold indicating the minimum size of a group of network to be statistically tested for difference with another group.
 - `method_clust`:	method to compute the distance between each cluster in the hierarchical clustering: “complete” (default) or average.
-- `MT`:		method to correct for multiple testing. Default “tree”, i.e. $p_adjusted=p\times\frac{N_j-1}{N-1}$, where N_j is the number of networks clustered at node j of the dendrogram.
+- `MT`:		method to correct for multiple testing, "none" (no multiple testing correction), "tree" (default), 1. With option “tree”, $p_adjusted=p\times\frac{N_j-1}{N-1}$, where N_j is the number of networks clustered at node j of the dendrogram and N the total number of networks. With option 1, the p-value is adjusted for the depth of the tree, i.e. no correction at the root node, $p_adj=p\times2$ at level 2 of the dendrogram, $p_adj=p\times3$ at level 3 of the dendrogram...
 - `p_threshold`:	maximum p-value for 2 groups of networks to be considered as significantly different, default 0.05.
 - `permutation`:	number of permutations to derive the p-value, default 99.
 - `perturbation`:	percentage of values permuted in the distance matrix, default 20%.
-- `Seed`:		seed for replicability.
+- `seed`:		seed for replicability.
 
 ### Details
 
