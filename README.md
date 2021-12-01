@@ -25,12 +25,12 @@ List of 30 adjacency matrices and their group membership (random, scale-free, hu
 load("networkData.RData")
 
 #Select the 30 adjacency matrices
-input_baseline_list=data[[1]]
+G=data[[1]]
 
 #Plot a random network, a scale-free network and a hub network
-plot(graph_from_adjacency_matrix(input_baseline_list[[1]]), vertex.label= NA, edge.arrow.size=0.02,vertex.size = 3, xlab = "Random network")
-plot(graph_from_adjacency_matrix(input_baseline_list[[11]]), vertex.label= NA, edge.arrow.size=0.02,vertex.size = 3, xlab = "Scale free network")
-plot(graph_from_adjacency_matrix(input_baseline_list[[21]]), vertex.label= NA, edge.arrow.size=0.02,vertex.size = 3, xlab = "Hub network")
+plot(graph_from_adjacency_matrix(G[[1]]), vertex.label= NA, edge.arrow.size=0.02,vertex.size = 3, xlab = "Random network")
+plot(graph_from_adjacency_matrix(G[[11]]), vertex.label= NA, edge.arrow.size=0.02,vertex.size = 3, xlab = "Scale free network")
+plot(graph_from_adjacency_matrix(G[[21]]), vertex.label= NA, edge.arrow.size=0.02,vertex.size = 3, xlab = "Hub network")
 
 #Select the group memberships
 membership=data[[2]]
@@ -71,7 +71,7 @@ A list containing a matrix of the vectorized networks if all graphs have the sam
 ```
 #Upload the simulated networks
 load("networkData.RData")
-input_baseline_list=data[[1]]
+G=data[[1]]
 
 #Compute the distance matrix
 init=initialization(G, meth=”edd”)
@@ -115,7 +115,7 @@ A list of two elements: table indicating the membership of each network, and det
 ```
 #Upload the simulated networks
 load("networkData.RData")
-input_baseline_list=data[[1]]
+G=data[[1]]
 
 #Compute the matrix distance
 init=initialization(G, meth=”edd”)
