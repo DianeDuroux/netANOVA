@@ -8,6 +8,7 @@ library(stringr)
 library(tidyr)
 library(KRLS)
 library(stats)
+library(anocva)
 
 #Define a distance measure
 dist_sim=function(G1,G2,maxNodes=NA, meth=NA){
@@ -17,10 +18,6 @@ dist_sim=function(G1,G2,maxNodes=NA, meth=NA){
   }
   else if(meth=="gdd"){ #Graph Diffusion Distance (via graph Laplacian exponential kernel matrices)
     d=nd.gdd(list(G1,G2))$D
-    s=1/(1+d)
-  }
-  else if(meth=="wsd"){ #Distance with Weighted Spectral Distribution
-    d=nd.wsd(list(G1,G2))$D
     s=1/(1+d)
   }
   else if(meth=="hamming"){ #hamming
@@ -66,16 +63,46 @@ dist_sim=function(G1,G2,maxNodes=NA, meth=NA){
     s=CalculateWLKernel(list(G1,G2), 5)[1,2]
     s22=CalculateWLKernel(list(G2,G2), 5)[1,2]
     d=sqrt(s11-2*s+s22)
-  }
-  else if(meth=="graphletKernel"){ #graphlet kernel
-    G1=graph_from_adjacency_matrix(G1, mode="undirected")
-    V(G1)$name <- V(G1)
-    G2=graph_from_adjacency_matrix(G2, mode="undirected")
-    V(G2)$name <- V(G2)
-    s11=CalculateGraphletKernel(list(G1,G1), 3)[1,2]
-    s=CalculateGraphletKernel(list(G1,G2), 3)[1,2]
-    s22=CalculateGraphletKernel(list(G2,G2), 3)[1,2]
-    d=sqrt(s11-2*s+s22)
+  }  else if(meth=="deltaCon"){
+    #Fab 
+    g1 <- as(G1, "sparseMatrix") #Construct sparse adjacent matrix
+    g2 <- as(G2, "sparseMatrix") #Construct sparse adjacent matrix
+    inv1 <- inverse_lbp(g1, maxNodes) * (.p - 0.5) # Naive FaBP
+    inv2 <- inverse_lbp(g2, maxNodes) * (.p - 0.5) # Naive FaBP  }
+    #Matusita
+    d <- sqrt(sum( (sqrt(inv1) - sqrt(inv2))^2 ))
+    s=1/(1+d)
+  } else if(meth=="GTOM"){
+    GTOM_diss1=TOMkdist1(G1,maxNodes)
+    GTOM_diss2=TOMkdist1(G2,maxNodes)
+    GTOM_sim1=1-GTOM_diss1 #convert dissimilarity measure to similarity measure
+    GTOM_sim2=1-GTOM_diss2
+    #Matusita
+    d <- sqrt(sum( (sqrt(GTOM_sim1) - sqrt(GTOM_sim2))^2 ))
+    s=1/(1+d)
+  } else if(meth=="randomWalkKernelKNC"){
+      G=G1
+      format=list()
+      for(i in 1:(length(G))){
+          tmp_data=G[[i]]
+          format[[i]]=graph_from_adjacency_matrix(tmp_data, mode = c("undirected"), weighted = T,) 
+      }
+      par=c(0,0.01,0.01^2, 0.01^3)
+      s <- k_RW(G=format, par=par) 
+      s=data.frame(s)
+      d=matrix(ncol=nrow(s), nrow=nrow(s))
+      for(i in 1:nrow(s)){
+       for(j in 1:nrow(s)){
+        if(j>=i){
+         d[i,j]=sqrt(s[i,i]-2*s[i,j]+s[j,j])
+        }
+      }
+    }
+   d[lower.tri(d)] = t(d)[lower.tri(d)]
+   d=as.matrix(d)
+   colnames(d)=seq(1, nrow(d))
+   rownames(d)=colnames(d)
+   return(list(d,s))
   } else if(meth=="gaussian"){
     data=as.matrix(t(cbind(c(G1), c(G2))))
     simMatrix=gausskernel(X=data,sigma=1000)
@@ -118,7 +145,11 @@ initialization=function(G, meth){
   } else {
     G_vect_adj_tot=NA
   }
-
+  if(meth=="randomWalkKernelKNC"){
+        tmp=dist_sim(G1=G, G2=NULL, meth=meth)
+        dist_tot=tmp[[1]]
+        S_tot=tmp[[2]]
+  } else {
   
   # Similarity/distance matrix between graphs
   S_tot=matrix(ncol=nbNet, nrow=nbNet) #S_tot is the similarity matrix
@@ -136,16 +167,30 @@ initialization=function(G, meth){
   }
   S_tot=format(S_tot, nbNet)
   dist_tot=format(dist_tot, nbNet)
+}
   return(list(G_vect_adj_tot, S_tot, dist_tot))
 }
 
-netANOVA=function(Dist, t=NULL, method_clust="complete", MT="tree", p_threshold=0.05, permutations=99, perturbation=0.2, seed=2021){ #t=threshold, minimum group size, perturbation=percentage of the distance matrix pertubated (the smaller the value, the more stringent it is) 
+
+#Normalize funciton for Spectral clustering
+normalize <- function(x, na.rm = TRUE) {
+  return(x/max(x))
+}
+
+netANOVA=function(Dist, t=NULL, method_clust="complete", MT=1, p_threshold=0.05, permutations=99, perturbation=0.2, seed=2021){ #t=threshold, minimum group size, perturbation=percentage of the distance matrix pertubated (the smaller the value, the more stringent it is) 
  set.seed(seed)
  
  if(is.null(t)){
    print("Please chose a minimum number of networks per group")
    return()
  }
+
+if(method_clust=="SpectralClustering"){
+  rname=rownames(Dist)
+  Dist=sapply(as.data.frame(Dist), function(x) normalize(x))/2
+  rownames(Dist)=rname
+  colnames(Dist)=rname
+}
 
   original_distance=Dist
   #Create membership output
@@ -264,13 +309,20 @@ global=function(Dist, t, method_clust, MT, membership, outlier, p_threshold, per
   return()
 }
 
+
 #Clustering
 #from G_vect_adj_tot or distance matrices
-clustering=function(method_clust, Dist){ #For kmeans and fuzzy_cmeans, G_vect_adj can be the adjacency matric or the sim within graphs. For hc, inputMatrix is Sim between graphs
+clustering=function(method_clust, Dist){ 
 print(method_clust)
-dend <- hclust(d=as.dist(Dist), method = method_clust)
+if(method_clust=="SpectralClustering"){
+  groups = as.data.frame(spectralClustering(Dist,2)) # the final subtypes information
+  colnames(groups)="group"
+  rownames(groups)=rownames(Dist)
+} else {
+  dend <- hclust(d=as.dist(Dist), method = method_clust)
     groups=as.data.frame(cutree(dend, k=2))
     plot(dend)
+ }
    return(groups)
 }
 
@@ -330,9 +382,13 @@ permANOVA_network=function(groups, group1, group2, s1=s1, s2=s2, tmp_MT, Dist, m
   tpm_perm[lower.tri(tpm_perm)] = t(tpm_perm)[lower.tri(tpm_perm)]
   diag(tpm_perm)=diag(as.matrix(Dist))
   
-  #hierarchical clustering
+  #Clustering
+if(method_clust=="SpectralClustering"){
+  perm_groups= data.frame(spectralClustering(tpm_perm,2)) # the final subtypes information
+} else {
   dend <- hclust(d=as.dist(tpm_perm), method = method_clust)
   perm_groups=as.data.frame(cutree(dend, k=2))
+}
   perm_groups$graph=rownames(perm_groups)
   colnames(perm_groups)=c("group", "graph")
   perm_group1=as.factor(perm_groups[perm_groups$group==1,"graph"])
