@@ -52,7 +52,7 @@ initialization(G, meth)
 **Arguments**
 
 - `G`:		A list of adjacency matrices.
-- `meth`: 		Type of distance method from “edd”, “gdd”, “wsd”, “hamming”, “rbf”,“shortestPathKernel”, "randomWalkKernel", "WLkernel", "graphletKernel", “Gaussian”.
+- `meth`: 		Type of distance method from “edd”, "gdd", “hamming”, “shortestPathKernel”, "randomWalkKernel", "randomWalkKernelKNC", "deltaCon", "GTOM", “Gaussian”.
 
 **Details**
 
